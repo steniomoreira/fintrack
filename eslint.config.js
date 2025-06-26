@@ -1,8 +1,9 @@
 import js from '@eslint/js'
-import globals from 'globals'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import globals from 'globals'
 
 export default [
   { ignores: ['dist'] },
@@ -35,4 +36,5 @@ export default [
       ],
     },
   },
+  eslintConfigPrettier,
 ]
