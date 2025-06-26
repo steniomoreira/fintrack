@@ -3,6 +3,7 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import globals from 'globals'
 
 export default [
@@ -23,6 +24,7 @@ export default [
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'simple-import-sort': simpleImportSort,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -34,6 +36,8 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
   eslintConfigPrettier,
