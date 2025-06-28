@@ -1,10 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-
 import tailwindcssAnimate from 'tailwindcss-animate'
 
 export default {
   darkMode: ['class'],
-  content: ['index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       borderRadius: {
@@ -26,6 +25,9 @@ export default {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          red: 'hsl(var(--primary-red))',
+          green: 'hsl(var(--primary-green))',
+          blue: 'hsl(var(--primary-blue))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
