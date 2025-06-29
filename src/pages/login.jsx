@@ -36,7 +36,7 @@ const loginSchema = z.object({
 })
 
 const LoginPage = () => {
-  const methods = useForm({
+  const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
@@ -50,8 +50,8 @@ const LoginPage = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
-      <Form {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
           <Card className="w-[500px]">
             <CardHeader>
               <CardTitle>Entre na sua conta</CardTitle>
@@ -59,7 +59,7 @@ const LoginPage = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <FormField
-                control={methods.control}
+                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -72,7 +72,7 @@ const LoginPage = () => {
                 )}
               />
               <FormField
-                control={methods.control}
+                control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
