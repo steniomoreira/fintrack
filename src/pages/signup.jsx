@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 
+import PasswordInput from '@/components/password-input'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -23,7 +24,9 @@ const SignUpPage = () => {
           <Input placeholder="Digite seu nome" />
           <Input placeholder="Digite seu sobrenome" />
           <Input type="email" placeholder="Digite seu e-mail" />
-          <Input type="password" placeholder="Digite seu senha" />
+
+          <PasswordInput />
+          <PasswordInput placeholder="Confirme sua senha" />
         </CardContent>
         <CardFooter>
           <Button className="w-full">Criar conta</Button>
