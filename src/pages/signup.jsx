@@ -43,7 +43,10 @@ const signupSchema = z.object({
   passwordConfirmation: z
     .string()
     .trim()
-    .min(6, { message: 'A confirmação de senha é obrigatória.' }),
+    .min(6, { message: 'A confirmação de senha é obrigatória.' })
+    .refine((data) => data.passwordConfirmation === data.password, {
+      message: 'As senhas devem ser iguais.',
+    }),
   terms: z.boolean().refine((value) => value === true, {
     message: 'Você precisa aceitar os termos.',
   }),
