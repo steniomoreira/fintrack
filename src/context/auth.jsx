@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { api } from '@/lib/axios'
@@ -9,6 +9,21 @@ export const AuthContext = createContext({
   login: () => {},
   signup: () => {},
 })
+
+export const useAuthContext = () => useContext(AuthContext)
+
+const LOCAL_STORAGE_ACCESS_TOKEN_KEY = 'accessToken'
+const LOCAL_STORAGE_REFRESH_TOKEN_KEY = 'refreshToken'
+
+const setTokens = (tokens) => {
+  localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, tokens.accessToken)
+  localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, tokens.refreshToken)
+}
+
+const removeTokens = () => {
+  localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY)
+  localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY)
+}
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null)
@@ -42,13 +57,8 @@ export const AuthContextProvider = ({ children }) => {
   const signup = (data) => {
     signupMutation.mutate(data, {
       onSuccess: (createdUser) => {
-        const accessToken = createdUser.tokens.accessToken
-        const refreshToken = createdUser.tokens.refreshToken
-
-        localStorage.setItem('accessToken', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
-
         setUser(createdUser)
+        setTokens(createdUser.tokens)
 
         toast.success('Conta criada com sucesso!')
       },
@@ -63,13 +73,8 @@ export const AuthContextProvider = ({ children }) => {
   const login = (data) => {
     loginMutation.mutate(data, {
       onSuccess: (loggedUser) => {
-        const accessToken = loggedUser.tokens.accessToken
-        const refreshToken = loggedUser.tokens.refreshToken
-
-        localStorage.setItem('accessToken', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
-
         setUser(loggedUser)
+        setTokens(loggedUser.tokens)
 
         toast.success('Login realizado com sucesso!')
       },
@@ -84,8 +89,10 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
+        const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY)
+        const refreshToken = localStorage.getItem(
+          LOCAL_STORAGE_REFRESH_TOKEN_KEY
+        )
 
         if (!accessToken && !refreshToken) return
 
@@ -99,8 +106,7 @@ export const AuthContextProvider = ({ children }) => {
       } catch (error) {
         console.error(error)
 
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
+        removeTokens()
       }
     }
 
