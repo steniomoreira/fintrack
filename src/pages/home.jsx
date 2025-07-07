@@ -1,9 +1,10 @@
 import { Navigate } from 'react-router'
 
+import { Button } from '@/components/ui/button'
 import { useAuthContext } from '@/context/auth'
 
 const HomePage = () => {
-  const { user, isInitializing } = useAuthContext()
+  const { user, isInitializing, signout } = useAuthContext()
 
   if (isInitializing) return null
 
@@ -11,7 +12,13 @@ const HomePage = () => {
     return <Navigate to={'/login'} />
   }
 
-  return <h1>{user.first_name}</h1>
+  return (
+    <div>
+      <h1>Olá, {user.first_name}</h1>
+
+      <Button onClick={signout}>Sair</Button>
+    </div>
+  )
 }
 
 export default HomePage
