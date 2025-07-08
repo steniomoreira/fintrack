@@ -113,7 +113,6 @@ export const AuthContextProvider = ({ children }) => {
       } catch (error) {
         console.error(error)
         setUser(null)
-        removeTokens()
       } finally {
         setIsInitializing(false)
       }
