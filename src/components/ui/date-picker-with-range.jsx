@@ -35,16 +35,16 @@ export const DatePickerWithRange = ({
             {value?.from ? (
               value.to ? (
                 <>
-                  {format(value.from, 'LLL dd, y', {
+                  {format(value.from, 'dd LLL, y', {
                     locale: ptBR,
                   })}{' '}
                   -{' '}
-                  {format(value.to, 'LLL dd, y', {
+                  {format(value.to, 'dd LLL, y', {
                     locale: ptBR,
                   })}
                 </>
               ) : (
-                format(value.from, 'LLL dd, y', {
+                format(value.from, 'dd LLL, y', {
                   locale: ptBR,
                 })
               )
@@ -61,6 +61,7 @@ export const DatePickerWithRange = ({
             selected={value}
             onSelect={onChange}
             numberOfMonths={2}
+            showOutsideDays={false}
             locale={ptBR}
           />
         </PopoverContent>
