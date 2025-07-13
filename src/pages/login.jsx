@@ -101,7 +101,6 @@ const LoginPage = () => {
                 {form.formState.isSubmitting && (
                   <Loader2 className="mr-1 h-2 w-2 animate-spin" />
                 )}
-                {console.log(form.formState.isSubmitting)}
                 Fazer login
               </Button>
             </CardFooter>
