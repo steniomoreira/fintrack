@@ -1,10 +1,9 @@
-import { PlusIcon } from 'lucide-react'
 import { Navigate } from 'react-router'
 
+import AddTransactionButton from '@/components/add-transaction-button'
 import Balance from '@/components/balance'
 import DateSelction from '@/components/date-selection'
 import Header from '@/components/header'
-import { Button } from '@/components/ui/button'
 import { useAuthContext } from '@/context/auth'
 
 const HomePage = () => {
@@ -26,10 +25,7 @@ const HomePage = () => {
           <div className="flex items-center gap-2">
             <DateSelction />
 
-            <Button>
-              <PlusIcon />
-              Nova transação
-            </Button>
+            <AddTransactionButton />
           </div>
         </div>
 
