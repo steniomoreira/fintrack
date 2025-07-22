@@ -16,14 +16,12 @@ const Balance = () => {
   const { user } = useAuthContext()
   const [seachParams] = useSearchParams()
 
-  const { data } = useQuery({
-    queryKey: ['balance', user.id],
-    queryFn: () => {
-      const from = seachParams.get('from')
-      const to = seachParams.get('to')
+  const from = seachParams.get('from')
+  const to = seachParams.get('to')
 
-      return UserService.getBalance({ from, to })
-    },
+  const { data } = useQuery({
+    queryKey: ['balance', user.id, from, to],
+    queryFn: () => UserService.getBalance({ from, to }),
   })
 
   return (
