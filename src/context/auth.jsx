@@ -48,8 +48,8 @@ export const AuthContextProvider = ({ children }) => {
     },
   })
 
-  const signup = (data) => {
-    signupMutation.mutate(data, {
+  const signup = async (data) => {
+    await signupMutation.mutateAsync(data, {
       onSuccess: (createdUser) => {
         setUser(createdUser)
         setTokens(createdUser.tokens)
@@ -64,8 +64,8 @@ export const AuthContextProvider = ({ children }) => {
     })
   }
 
-  const login = (data) => {
-    loginMutation.mutate(data, {
+  const login = async (data) => {
+    await loginMutation.mutateAsync(data, {
       onSuccess: (loggedUser) => {
         setUser(loggedUser)
         setTokens(loggedUser.tokens)
