@@ -1,13 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
+  Loader2,
   PiggyBankIcon,
   PlusIcon,
   TrendingDownIcon,
   TrendingUpIcon,
 } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { NumericFormat } from 'react-number-format'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import {
@@ -19,6 +23,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useAuthContext } from '@/context/auth'
+import { Transaction } from '@/services/transaction'
 
 import { Button } from './ui/button'
 import { DatePicker } from './ui/date-picker'
@@ -46,6 +52,21 @@ const formSchema = z.object({
 })
 
 const AddTransactionButton = () => {
+  const [dialigIsOpen, setDialogIsOpen] = useState(false)
+  const { user } = useAuthContext()
+
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: createTransaction } = useMutation({
+    mutationKey: ['createTransaction'],
+    mutationFn: (input) => Transaction.createTransaction(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['balance', user.id],
+      })
+    },
+  })
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,13 +78,20 @@ const AddTransactionButton = () => {
     shouldUnregister: true,
   })
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    try {
+      await createTransaction(data)
+
+      toast.success('Transação criada com sucesso!')
+      setDialogIsOpen(false)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
     <>
-      <Dialog>
+      <Dialog open={dialigIsOpen} onOpenChange={setDialogIsOpen}>
         <DialogTrigger asChild>
           <Button>
             <PlusIcon />
@@ -184,7 +212,14 @@ const AddTransactionButton = () => {
                     Cancelar
                   </Button>
                 </DialogClose>
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting && (
+                    <Loader2 className="mr-1 h-2 w-2 animate-spin" />
+                  )}
                   Adicionar
                 </Button>
               </DialogFooter>
