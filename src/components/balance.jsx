@@ -22,6 +22,8 @@ const Balance = () => {
   const { data } = useQuery({
     queryKey: ['balance', user.id, from, to],
     queryFn: () => UserService.getBalance({ from, to }),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: Boolean(from) && Boolean(to) && Boolean(user.id),
   })
 
   return (
