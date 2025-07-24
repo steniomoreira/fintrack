@@ -14,6 +14,8 @@ import { NumericFormat } from 'react-number-format'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { getUserBalanceQueryKey } from '@/api/hooks/user'
+import { Transaction } from '@/api/services/transaction'
 import {
   Dialog,
   DialogContent,
@@ -24,7 +26,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useAuthContext } from '@/context/auth'
-import { Transaction } from '@/services/transaction'
 
 import { Button } from './ui/button'
 import { DatePicker } from './ui/date-picker'
@@ -62,7 +63,7 @@ const AddTransactionButton = () => {
     mutationFn: (input) => Transaction.createTransaction(input),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['balance', user.id],
+        queryKey: getUserBalanceQueryKey({ userId: user.id }),
       })
     },
   })
