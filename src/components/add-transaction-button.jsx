@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Loader2,
   PiggyBankIcon,
@@ -14,8 +13,7 @@ import { NumericFormat } from 'react-number-format'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { getUserBalanceQueryKey } from '@/api/hooks/user'
-import { Transaction } from '@/api/services/transaction'
+import { useCreateTransaction } from '@/api/hooks/transaction'
 import {
   Dialog,
   DialogContent,
@@ -25,7 +23,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useAuthContext } from '@/context/auth'
 
 import { Button } from './ui/button'
 import { DatePicker } from './ui/date-picker'
@@ -54,19 +51,8 @@ const formSchema = z.object({
 
 const AddTransactionButton = () => {
   const [dialigIsOpen, setDialogIsOpen] = useState(false)
-  const { user } = useAuthContext()
 
-  const queryClient = useQueryClient()
-
-  const { mutateAsync: createTransaction } = useMutation({
-    mutationKey: ['createTransaction'],
-    mutationFn: (input) => Transaction.createTransaction(input),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: getUserBalanceQueryKey({ userId: user.id }),
-      })
-    },
-  })
+  const { mutateAsync: createTransaction } = useCreateTransaction()
 
   const form = useForm({
     resolver: zodResolver(formSchema),
