@@ -18,6 +18,9 @@ export const useCreateTransaction = () => {
       queryClient.invalidateQueries({
         queryKey: getUserBalanceQueryKey({ userId: user.id }),
       })
+      queryClient.invalidateQueries({
+        queryKey: getTranactionsQueryKey({ userId: user.id }),
+      })
     },
   })
 }
@@ -30,10 +33,11 @@ export const getTranactionsQueryKey = ({ userId, from, to }) => {
   return ['getTransactions', userId, from, to]
 }
 
-export const useGetTransaction = ({ from, to }) => {
+export const useGetTransactions = ({ from, to }) => {
   const { user } = useAuthContext()
   return useQuery({
     queryKey: getTranactionsQueryKey({ userId: user.id, from, to }),
     queryFn: () => Transaction.getAll({ from, to }),
+    enabled: Boolean(from) && Boolean(to) && Boolean(user.id),
   })
 }
