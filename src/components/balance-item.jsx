@@ -1,3 +1,5 @@
+import { currencyFormat } from '@/helpers/currency'
+
 import { Card, CardContent } from './ui/card'
 
 const BalanceItem = ({ label, icon, amount }) => {
@@ -11,12 +13,7 @@ const BalanceItem = ({ label, icon, amount }) => {
           <p className="text-sm text-muted-foreground">{label}</p>
         </div>
 
-        <h3 className="text-2xl font-semibold">
-          {new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          }).format(amount)}
-        </h3>
+        <h3 className="text-2xl font-semibold">{currencyFormat(amount)}</h3>
       </CardContent>
     </Card>
   )
