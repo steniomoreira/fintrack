@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const createTransactionformSchema = z.object({
+export const createTransactionFormSchema = z.object({
   name: z.string().trim().min(1, {
     message: 'O nome é obrigatório',
   }),
@@ -11,4 +11,8 @@ export const createTransactionformSchema = z.object({
     required_error: 'A data é obrigatório.',
   }),
   type: z.enum(['EARNING', 'EXPENSE', 'INVESTMENT']),
+})
+
+export const editTransactionFormSchema = createTransactionFormSchema.extend({
+  id: z.string().uuid(),
 })
